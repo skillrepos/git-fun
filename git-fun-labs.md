@@ -293,6 +293,8 @@ git diff --cached
 git diff HEAD
 ```
 
+<br><br>
+
 ### 12. Commit using the shortcut
 ```bash
 git commit -am "COMMIT_MSG"
