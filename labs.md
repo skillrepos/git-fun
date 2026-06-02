@@ -780,7 +780,7 @@ You should see conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`).
 For simplicity, just overwrite the file with a merged version:
 
 ```bash
-echo "merged version" > NEWFILE
+echo merged version > NEWFILE
 ```
 
 <br><br>
