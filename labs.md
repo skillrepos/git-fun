@@ -1,7 +1,7 @@
 # Git Fundamentals
 ## Understanding and using Git effectively
 ## Session labs
-## Revision 4.1 - 06/02/26
+## Revision 4.2 - 06/02/26
 © 2026 Brent Laster & Tech Skills Transformations LLC
 
 <br><br>
@@ -70,7 +70,7 @@ This creates a `.git` directory that stores all repository metadata. You are now
 
 <br><br>
 
-### 3. Configure your Git identity. Tell Git who you are by setting your required configuration settins with the following commands.
+### 3. Configure your Git identity. Tell Git who you are by setting your required configuration settings with the following commands.
 
 Note the double dashes before **global** since we are spelling out the option. Also, values only require quotes if there is a space in the value.
 
