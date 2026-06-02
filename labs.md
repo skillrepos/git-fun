@@ -1,8 +1,8 @@
 # Git Fundamentals
 ## Understanding and using Git effectively
 ## Session labs
-## Revision 4.0 - 12/08/25
-© 2025 Brent Laster & Tech Skills Transformations LLC
+## Revision 4.1 - 06/02/26
+© 2026 Brent Laster & Tech Skills Transformations LLC
 
 <br><br>
 ---
