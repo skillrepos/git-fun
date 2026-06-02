@@ -1,7 +1,7 @@
 # Git Fundamentals
 ## Understanding and using Git effectively
 ## Session labs
-## Revision 4.2 - 06/02/26
+## Revision 4.3 - 06/02/26
 © 2026 Brent Laster & Tech Skills Transformations LLC
 
 <br><br>
@@ -565,9 +565,10 @@ git branch
 ```
 
 You should now see:
-- `main`
-- `FEATURE_BRANCH`
 
+- `FEATURE_BRANCH`
+- `* main`
+  
 <br><br>
 
 ### 6. Switch to the feature branch. 
