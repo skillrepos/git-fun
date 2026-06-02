@@ -601,7 +601,7 @@ echo some-text > NEW_FILE
 ### 9. Update an existing file to indicate that it is associated with the feature branch.
 
 ```bash
-echo "feature version" >> EXISTING_FILE
+echo feature version >> EXISTING_FILE
 ```
 
 <br><br>
