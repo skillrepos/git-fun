@@ -1,7 +1,7 @@
 # Git Fundamentals
 ## Understanding and using Git effectively
 ## Session labs
-## Revision 4.4 - 08/27/26
+## Revision 4.5 - 09/01/26
 © 2026 Brent Laster & Tech Skills Transformations LLC
 
 <br><br>
@@ -127,8 +127,6 @@ You will see the branch name (`main`), the note `root-commit`, and the short SHA
 ```text
 [main (root-commit) 76e4e79] COMMIT_MSG
 ```
-
-The branch is `main` because of the `init.defaultBranch` setting from step 2. Without it, Git would have created `master` here — try `git init` in a throwaway directory with `GIT_CONFIG_GLOBAL=/dev/null` sometime and you will see the difference.
 
 <br><br>
 
@@ -876,7 +874,7 @@ Go to: [https://github.com/skillrepos/calc3](https://github.com/skillrepos/calc3
 
 <br>
 
-- Uncheck **Copy the main branch only** so you also get other remote branches.
+- **IMPORTANT: Uncheck **Copy the main branch only** so you also get other remote branches.**
 - Click **Create fork**.
 
 <br>
@@ -906,10 +904,10 @@ https://github.com/YOUR_GITHUB_USERID/calc3
 <br><br>
 
 ### 5. Clone the project locally
-In your terminal:
+In your terminal, type `git clone` followed by a paste of the URL you copied in step 4 (or you can type the URL, substituting in your GitHub userid):
 
 ```bash
-cd ..   # if needed, to get out of the previous lab repo
+cd ..   # if needed, to get out of the previous lab repo (we don't want to have a clone within a clone)
 git clone https://github.com/YOUR_GITHUB_USERID/calc3.git
 cd calc3
 ```
@@ -1019,11 +1017,10 @@ NOTE: This isn’t exactly what would occur if we ran into changes by another us
 To get past the rejection, we need to merge in the content from the remote. To try this, we can just do a pull operation from the remote.
 
 ```bash
-git pull --no-rebase
+git pull --no-rebase --no-edit
 ```
 
-Git may open an editor for the *merge commit* message. If so, you can change it if you want, but when you are done, just close the editor.
-
+The `--no-rebase` option tells Git to pick a true merge process over a rebase. The `--no-edit` option tells Git just to accept a generated message for the merge. Without it, Git will open an editor for the *merge commit* message. 
 <br><br>
 
 ### 17. Push again (should succeed).
