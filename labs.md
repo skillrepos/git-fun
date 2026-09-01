@@ -1055,40 +1055,213 @@ Refresh your fork’s GitHub page and confirm the history reflects your rebase a
 </p>
 </br></br>
 
-# Appendix — Credential Helper / SSH Options
+# Appendix 1 — Other Options for Getting Your Changes In
 
-If HTTPS authentication fails (for example, due to old or incorrect stored credentials), use one of the following approaches.
+**Use these only if the HTTPS push in Lab 6 did not work for you.** Choose *one* of A, B, or C.
 
-## Option A — Reset Credential Helper
+<br><br>
 
-Reset or adjust your credential helper:
+---
+
+## A. Resetting credential helpers
+
+Especially on Windows, if you are pasting in your token for the password but *still* get an error message referencing password authentication, you may be running into credentials that were stored previously in the *credential helper*.
+
+One thing you can try in this case is resetting the stored credentials:
 
 ```bash
 git config --global credential.helper store
 ```
 
-> ⚠️ `store` writes your token **in plain text** to `~/.git-credentials`. It is fine for a workshop machine; for real work prefer `cache` (memory only, times out), the macOS `osxkeychain` helper, or Git Credential Manager.
+Then do your push as per the lab. It will probably pop up a text entry box for you to add your username, and another to paste in your password (PAT). It will then replace your credentials with those and complete the push.
 
-If you prefer to disable a system-level credential helper (if permitted):
+> ⚠️ `store` writes your token **in plain text** to `~/.git-credentials`. That is fine for a workshop machine; for real work prefer `cache` (memory only, times out), the macOS `osxkeychain` helper, or Git Credential Manager.
+
+If you prefer to disable the system-level credential helper entirely, you can try:
 
 ```bash
 git config --unset --system credential.helper
 ```
 
-After updating this, try your `git push` again. You will be prompted for credentials, and you can paste your PAT.
+This may or may not work, depending on whether you have permission to change system-level config.
 
-## Option B — Use SSH Keys
-
-If you are comfortable with SSH keys, you can add them to GitHub and use SSH instead of HTTPS.
-
-GitHub docs:
-
-https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-
-When cloning or updating the remote URL in this case, use the **SSH** URL from the **Code** dialog.
-
-![ssh option](./images/git18.png?raw=true "ssh option")
+<br><br>
 
 ---
 
+## B. SSH keys
 
+If you are familiar with using SSH and have keys, you can add them to GitHub and use those instead of HTTPS. See GitHub's documentation for details:
+
+[Adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+
+If you go this route, when you get the remote URL from the browser, select the **SSH** tab.
+
+![SSH option](./images/git18.png?raw=true "SSH option")
+
+<br><br>
+
+---
+
+## C. Commit directly in GitHub
+
+Another option is to edit and commit a file directly in GitHub in the browser — no local push required.
+
+> **Note:** This path commits a *file edit* made in the browser. It is a way to get a change into your fork when pushing from your machine will not work; it does not reproduce the rebase you did in Lab 6.
+
+> **Note on the screenshots:** these were captured against an earlier version of the calculator repository, so they show `calc` rather than `calc3`. The steps are identical.
+
+<br><br>
+
+### 1. Create a `dev` branch in the repo.
+
+Click on the branch dropdown under the title of the repo. In the *Find or create a branch* field, type **dev**. Then click on **Create branch dev from main**.
+
+![Create dev branch](./images/git23.png?raw=true "Create dev branch")
+
+<br><br>
+
+### 2. Open the file you want to change.
+
+In the `dev` branch, click on the `calc.html` file to open it.
+
+![Open calc.html](./images/git24.png?raw=true "Open calc.html")
+
+<br><br>
+
+### 3. Click on the pencil icon to edit the file.
+
+![Edit the file](./images/git25.png?raw=true "Edit the file")
+
+<br><br>
+
+### 4. Make your edits in the file.
+
+<br><br>
+
+### 5. Commit the change.
+
+When done editing, click the **Commit changes...** button in the upper **right**. In the dialog that comes up, you can leave all the options as they are (note that *Commit directly to the dev branch* is already selected), then click the **Commit changes** button to commit the file.
+
+![Commit changes](./images/git26.png?raw=true "Commit changes")
+
+<br><br>
+
+---
+
+<p align="center">
+<br>[END OF APPENDIX 1]<br>
+</p>
+</br></br>
+
+
+# Appendix 2 — Alternative Ways to Fork a Repository
+
+Use one of these if you cannot use the actual **Fork** button in Lab 6.
+
+> **IMPORTANT:** The steps below use the `calc3` repository from Lab 6. Change the name to whatever repository you are trying to fork.
+>
+> **Note on the screenshots:** they were captured with a different repository (`sec-demo`), so the repository name in the images will not match. The steps are the same.
+
+<br><br>
+
+---
+
+## Option 1 — Using import
+
+### 1. Sign in to GitHub if you are not already signed in.
+
+<br><br>
+
+### 2. Go to the import page.
+
+[https://github.com/new/import](https://github.com/new/import)
+
+<br><br>
+
+### 3. Fill out the form.
+
+- Under **Your source repository details**, in the **The URL for your source repository \*** field, enter:
+
+  ```text
+  https://github.com/skillrepos/calc3
+  ```
+
+- Under **Your new repository details**, make sure your userid shows up in the **Owner \*** field, and enter the repository name you want in the **Repository name \*** field.
+
+- The visibility field should be set to **Public**.
+
+![Filling out the import form](./images/git27.png?raw=true "Filling out the import form")
+
+<br><br>
+
+### 4. Click the green **Begin import** button.
+
+<br><br>
+
+### 5. Wait for the import to process.
+
+![Import processing](./images/git28.png?raw=true "Import processing")
+
+<br><br>
+
+---
+
+## Option 2 — Using clone and push
+
+### 1. Sign in to GitHub if you are not already signed in.
+
+<br><br>
+
+### 2. Make sure you have a token or an SSH key.
+
+If you are familiar with SSH keys, you can add your public key at [https://github.com/settings/keys](https://github.com/settings/keys).
+
+Otherwise, create a *classic* token by following the instructions at [Creating a personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic). If you use a token, save a copy of it to use in the push step.
+
+<br><br>
+
+### 3. Clone down the `skillrepos/calc3` repository.
+
+```bash
+git clone https://github.com/skillrepos/calc3      # if using a token
+```
+or
+```bash
+git clone git@github.com:skillrepos/calc3          # if using SSH
+```
+
+<br><br>
+
+### 4. Create a new repository in your GitHub space named `calc3`.
+
+Go to [https://github.com/new](https://github.com/new). Fill in the **Repository name** field with `calc3`, then click the **Create repository** button.
+
+![Create new repository](./images/git29.png?raw=true "Create new repository")
+
+<br><br>
+
+### 5. Push your content up to your new repository.
+
+On the page that comes up after that, select the appropriate protocol (**HTTPS** or **SSH**), then follow the instructions under *"...or push an existing repository from the command line"*.
+
+![Push to repository](./images/git30.png?raw=true "Push to repository")
+
+> ⚠️ **Watch out for this one.** GitHub's snippet starts with `git remote add origin ...`, which assumes you created the project with `git init`. You *cloned*, so `origin` already exists and that command fails with `error: remote origin already exists.`
+>
+> Point the existing remote at your new repo instead:
+>
+> ```bash
+> git remote set-url origin https://github.com/YOUR_GITHUB_USERID/calc3.git
+> git branch -M main
+> git push -u origin main
+> ```
+
+If you are using HTTPS you will be prompted for a password at push time. Just paste in the classic token. (For security reasons, the token will not be displayed as you paste it.)
+
+---
+
+<p align="center">
+<br>[END OF APPENDIX 2]<br>
+</p>
+</br></br>
