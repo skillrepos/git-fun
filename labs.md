@@ -1,7 +1,7 @@
 # Git Fundamentals
 ## Understanding and using Git effectively
 ## Session labs
-## Revision 4.3 - 06/02/26
+## Revision 4.4 - 08/27/26
 © 2026 Brent Laster & Tech Skills Transformations LLC
 
 <br><br>
@@ -11,7 +11,9 @@
 
 **Note 1 — GitHub Personal Access Token (PAT)**  
 
-Before Lab 6, you must have a GitHub account **and a Personal Access Token**. You will have a choice of a *fine-grained* token or a *classic* token. We will use *classic*.
+Before Lab 6, you must have a GitHub account **and a Personal Access Token**. You will have a choice of a *fine-grained* token or a *classic* token. We will use *classic* because it is quicker to set up for a workshop.
+
+> Note: GitHub has not retired classic tokens, but its docs now recommend fine-grained tokens "whenever possible." For your own work after the workshop, prefer fine-grained.
 
 Below is a link with detailed instructions.
 
@@ -43,11 +45,12 @@ Create a new Git repository, configure your identity, add files, stage them, and
 <br><br>
 
 ## Prerequisites
-- Git installed (version **2.0+**)
+- Git installed — **2.23 minimum**, 2.40 or newer recommended. (These labs and the slides use `git switch` and `git restore`, added in 2.23.)
 - Confirm version using:
   ```bash
   git --version
   ```
+  You should see something like `git version 2.51.0`. If it is older than 2.23, update Git before continuing.
 <br><br>
 
 ---
@@ -62,22 +65,25 @@ cd WORKDIR
 
 <br><br>
 
-### 2. Initialize a new Git repository in the directory by running the command below.
-```bash
-git init
-```
-This creates a `.git` directory that stores all repository metadata. You are now able to start using other Git commands in the current directory.
-
-<br><br>
-
-### 3. Configure your Git identity. Tell Git who you are by setting your required configuration settings with the following commands.
+### 2. Configure Git before we create anything. Tell Git who you are, and tell it what to name the first branch in new repositories.
 
 Note the double dashes before **global** since we are spelling out the option. Also, values only require quotes if there is a space in the value.
 
 ```bash
 git config --global user.name "FIRST_NAME LAST_NAME"
 git config --global user.email YOUR_EMAIL_ADDRESS
+git config --global init.defaultBranch main
 ```
+
+Why that third command matters: **Git's own built-in default branch name is still `master`** — it does not become `main` until Git 3.0. Some installers set this for you and disagree with each other (Apple's Xcode Command Line Tools set `main`; the Git for Windows installer sets `master`), so without this line different people in this room would get different branch names and the rest of the labs would not match. Setting it explicitly puts everyone on `main`.
+
+<br><br>
+
+### 3. Initialize a new Git repository in the directory by running the command below.
+```bash
+git init
+```
+This creates a `.git` directory that stores all repository metadata. You are now able to start using other Git commands in the current directory.
 
 <br><br>
 
@@ -116,7 +122,13 @@ git commit -m "COMMIT_MSG"
 
 ### 7. Observe the commit output.
 
-You will see the branch name (`main`), the note `root-commit`, and the short SHA-1.
+You will see the branch name (`main`), the note `root-commit`, and the short SHA-1. It looks like this:
+
+```text
+[main (root-commit) 76e4e79] COMMIT_MSG
+```
+
+The branch is `main` because of the `init.defaultBranch` setting from step 2. Without it, Git would have created `master` here — try `git init` in a throwaway directory with `GIT_CONFIG_GLOBAL=/dev/null` sometime and you will see the difference.
 
 <br><br>
 
@@ -392,11 +404,13 @@ Since this is a bit much to type, let’s create an alias to simplify running th
 git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --date=short"
 ```
 
+(If you want the branch topology drawn alongside the history, add `--graph` to the alias. The slides show that variant.)
+
 <br><br>
 
 ### 6. Run the alias.
 
-Now run your new *hist* alias. You should see the same output as the original *log* command from step 3. If you encounter any problems, go back and double-check what you typed in step 4.
+Now run your new *hist* alias. You should see the same output as the formatted *log* command from step 4. If you encounter any problems, go back and double-check what you typed in step 4.
 
 ```bash
 git hist
@@ -577,7 +591,11 @@ We can now see our new branch listed. Let’s change into the `feature` branch t
 
 ```bash
 git checkout FEATURE_BRANCH
+# or, the modern equivalent (Git 2.23+):
+git switch FEATURE_BRANCH
 ```
+
+We use `git checkout` in these labs because you will meet it in every existing script, tutorial and Stack Overflow answer. `git switch` does the branch-changing half of `checkout`'s job and is the clearer command for new code — the slides cover both.
 <br><br>
 
 ### 7. Verify you are on the feature branch.
@@ -619,6 +637,7 @@ git commit -m "feature version"
 
 ```bash
 git checkout main
+# or: git switch main
 ```
 
 <br><br>
@@ -721,6 +740,7 @@ git commit -m "update on main"
 
 ```bash
 git checkout NEW_BRANCH
+# or: git switch NEW_BRANCH
 ```
 
 <br><br>
@@ -743,6 +763,7 @@ git commit -am "update on NEW_BRANCH"
 ### 10. Switch back to `main`
 ```bash
 git checkout main
+# or: git switch main
 ```
 
 <br><br>
@@ -787,8 +808,11 @@ echo merged version > NEWFILE
 
 ### 15. Stage and commit the resolved file.
 
+Staging a conflicted file is how you tell Git the conflict is resolved.
+
 ```bash
-git commit -am "Fixed conflicts"
+git add .
+git commit -m "Fixed conflicts"
 ```
 
 <br><br>
@@ -938,7 +962,7 @@ git log --oneline features # features
 
 <br><br>
 
-### 12. Rebase `features` onto `main`
+### 12. Rebase your `main` onto `features`
 While on `main`:
 
 ```bash
@@ -947,7 +971,7 @@ git rebase features
 
 <br><br>
 
-This applies the commits from `features` onto your local `main` branch.
+Read the direction carefully, because this is the thing people most often get backwards: `git rebase features` replays the commits on **your current branch** (`main`) on top of **`features`**. The net result is that your local `main` now contains the feature work, with your own commits replayed on top of it.
 
 ### 13. Inspect updated history.
 ```bash
@@ -963,9 +987,12 @@ git log --oneline
 git push -u origin main
 ```
 
-You will be prompted for:
-- Username (your GitHub username)
-- A sign-in/Private Access Token or password. Wherever it asks for a token or a password, you can just copy and paste in the token you generated in GitHub prior to this lab.  An example dialog that may come up is shown below.
+You will be prompted to authenticate. What you see depends on your system:
+
+- **A browser window or sign-in dialog opens.** Git Credential Manager ships enabled by default with Git for Windows, and macOS caches through the keychain. If this happens, just sign in to GitHub in the browser — you will not need to paste the token at all.
+- **A username/password prompt appears in the terminal.** Then supply:
+  - Username (your GitHub username)
+  - A sign-in/Private Access Token or password. Wherever it asks for a token or a password, you can just copy and paste in the token you generated in GitHub prior to this lab.  An example dialog that may come up is shown below.
 
 ![Sign-in dialog](./images/git20.png?raw=true "Sign-in dialog")
 
@@ -1043,10 +1070,12 @@ Reset or adjust your credential helper:
 git config --global credential.helper store
 ```
 
+> ⚠️ `store` writes your token **in plain text** to `~/.git-credentials`. It is fine for a workshop machine; for real work prefer `cache` (memory only, times out), the macOS `osxkeychain` helper, or Git Credential Manager.
+
 If you prefer to disable a system-level credential helper (if permitted):
 
 ```bash
-git config --unset --system credentials.helper
+git config --unset --system credential.helper
 ```
 
 After updating this, try your `git push` again. You will be prompted for credentials, and you can paste your PAT.
